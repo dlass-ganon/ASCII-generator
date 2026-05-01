@@ -1,8 +1,13 @@
 from PIL import Image
 
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+
 symbols = [" ", ".", "·", "+", "°", "o", "*", "¤", "@", "#"]
 
-def ASCII_gen(image_path, new_width=100):
+def ASCII_gen(image_path, new_width=115):
     
     img = Image.open(image_path).convert("L")
     
@@ -21,28 +26,13 @@ def ASCII_gen(image_path, new_width=100):
     
     return ascii_img
 
-result = ASCII_gen("your.png")
+result = ASCII_gen("oneshot niko icon.jpeg")
+###print(result)
 
-def save_as_html(ascii_img, filename="output.html"):
-    html_content = f"""
-    <html>
-    <head>
-        <style>
-            body {{
-                background-color: #000; /* Black background */
-                color: #fff;            /* White text */
-                font-family: 'Courier New', monospace;
-                line-height: 8px;       /* Tighten line height */
-                letter-spacing: 0px;
-                white-space: pre;       /* Keeps spaces/newlines */
-            }}
-        </style>
-    </head>
-    <body>
-{ascii_img}
-    </body>
-    </html>
-    """
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(html_content)
-    print(f"Saved to {filename}")
+@app.route('/')
+def home():
+    my_text = result
+    return render_template('index.html', display_text=my_text)
+
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
