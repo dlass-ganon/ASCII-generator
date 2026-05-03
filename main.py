@@ -1,9 +1,12 @@
 from PIL import Image
 
+import os
+
 from flask import Flask, render_template
 app = Flask(__name__)
 
-
+Image_folder =  os.path.join("static", "assets") #idetifies the folders
+Image_path = os.path.join(Image_folder, "demon.jpeg") 
 
 symbols = [" ", ".", "·", "+", "°", "o", "*", "¤", "@", "#"]
 
@@ -26,8 +29,7 @@ def ASCII_gen(image_path, new_width=115):
     
     return ascii_img
 
-result = ASCII_gen("oneshot niko icon.jpeg")
-###print(result)
+result = ASCII_gen(Image_path)
 
 @app.route('/')
 def home():
